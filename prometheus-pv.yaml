@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume #pv是全局范围内的，没有namespace的限制
+metadata:
+  name: prometheus-pv
+  labels:
+    type: local
+spec:
+  capacity: #定义了一个10Gi大小的容量
+    storage: 10Gi #nfs 这个地方其实没意义，定义10个G，你的pod实际上可以使用大于10G；(和你底层存储有关)；底层pv能否扩容，是要依赖于你底层存储的； ceph的rbd是可以扩容的，nfs你本来就限制不住的；
+  accessModes: #定义访问模式
+    - ReadWriteOnce
+  hostPath: #hostPath路径的声明（底层存储）
+    path: "/root/kubeConfig/prometheus/data"
